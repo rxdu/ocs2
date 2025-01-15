@@ -1,17 +1,26 @@
 <?xml version="1.0"?>
-<package format="2">
-  <name>ocs2_thirdparty</name>
-  <version>0.0.1</version>
-  <description>Package containing third party libraries that OCS2 uses.</description>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+    <name>ocs2_thirdparty</name>
+    <version>0.0.1</version>
+    <description>Package containing third party libraries that OCS2 uses.</description>
 
-  <maintainer email="farbod.farshidian@gmail.com">Farbod Farshidian</maintainer>
-  <maintainer email="jcarius@ethz.ch">Jan Carius</maintainer>
-  <maintainer email="rgrandia@ethz.ch">Ruben Grandia</maintainer>
+    <maintainer email="ruixiang.du@gmail.com">Ruixiang Du</maintainer>
+    <maintainer email="farbod.farshidian@gmail.com">Farbod Farshidian</maintainer>
+    <maintainer email="jcarius@ethz.ch">Jan Carius</maintainer>
+    <maintainer email="rgrandia@ethz.ch">Ruben Grandia</maintainer>
 
-  <license>Check individual license files for each library</license>
+    <license>EPL-2.0 for CppAD - https://github.com/coin-or/CppAD/blob/master/epl-2.0.txt</license>
+    <license>BSD for RobCoGen - https://robcogenteam.bitbucket.io/license.html</license>
 
-  <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>cmake_modules</build_depend>
+    <buildtool_depend>ament_cmake</buildtool_depend>
+
+    <test_depend>ament_lint_auto</test_depend>
+    <test_depend>ament_lint_common</test_depend>
+
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
 
 </package>
 
