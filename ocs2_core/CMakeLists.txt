@@ -129,13 +129,13 @@ add_library(${PROJECT_NAME}
     src/penalties/penalties/RelaxedBarrierPenalty.cpp
     src/penalties/penalties/SquaredHingePenalty.cpp
     src/thread_support/ThreadPool.cpp)
+target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 target_link_libraries(${PROJECT_NAME} PUBLIC
     Eigen3::Eigen
-    Boost::system Boost::filesystem Boost::log_setup Boost::log
+    ${Boost_LIBRARIES}
     OpenMP::OpenMP_CXX
     Threads::Threads)
 ament_target_dependencies(${PROJECT_NAME} PUBLIC ${ros_dependencies})
-target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
 target_include_directories(${PROJECT_NAME} PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/test/include>"
