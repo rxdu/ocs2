@@ -1,0 +1,81 @@
+name: Build and Test OCS2
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        ros_distro: [ 'ros:humble', 'ros:jazzy' ]
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.ros_distro }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Environment Information
+        run: |
+          pwd
+          uname -r
+          lsb_release -a
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          path: colcon_ws/src
+      - name: Install system dependencies
+        run: |
+          apt-get update
+          apt-get install -y git ninja-build liburdfdom-dev liboctomap-dev libassimp-dev checkinstall wget rsync
+      - name: Clone additional repositories
+        run: |
+          cd ${GITHUB_WORKSPACE}/colcon_ws
+          git clone -b jazzy https://github.com/rxdu/gz_ros2_control.git
+          git clone --recurse-submodules https://github.com/leggedrobotics/pinocchio.git src/pinocchio
+          git clone --recurse-submodules https://github.com/leggedrobotics/hpp-fcl.git src/hpp-fcl
+          git clone https://github.com/leggedrobotics/ocs2_robotic_assets.git src/ocs2_robotic_assets
+#      - name: Install RaiSim
+#        run: |
+#          git clone --depth 1 https://github.com/raisimTech/raisimLib.git -b v1.1.01 src/raisim_tech
+#          cd src/raisim_tech
+#          mkdir build
+#          cd build
+#          cmake .. -DPYTHON_EXECUTABLE=$(python3 -c "import sys; print(sys.executable)")
+#          make -j4 && checkinstall
+#      - name: Install ONNX Runtime
+#        run: |
+#          wget https://github.com/microsoft/onnxruntime/releases/download/v1.7.0/onnxruntime-linux-x64-1.7.0.tgz -P tmp/microsoft
+#          tar xf tmp/microsoft/onnxruntime-linux-x64-1.7.0.tgz -C tmp/microsoft
+#          rsync -a tmp/microsoft/onnxruntime-linux-x64-1.7.0/include/ /usr/local/include/onnxruntime
+#          rsync -a tmp/microsoft/onnxruntime-linux-x64-1.7.0/lib/ /usr/local/lib
+#          rsync -a src/ocs2/ocs2_mpcnet/ocs2_mpcnet_core/misc/onnxruntime/cmake/ /usr/local/share/onnxruntime
+      - name: Install additional ROS dependencies
+        run: |
+          apt update
+          apt install -y python3-rosdep
+          if [ ! -e /etc/ros/rosdep/sources.list.d/20-default.list ]; then rosdep init; fi
+          cd ${GITHUB_WORKSPACE}/colcon_ws
+          source /opt/ros/${ROS_DISTRO}/setup.bash
+          rosdep update
+          rosdep install -y -r --ignore-src --from-paths src --rosdistro ${ROS_DISTRO}
+      - name: Colcon build
+        run: |
+          cd ${GITHUB_WORKSPACE}/colcon_ws
+          source /opt/ros/${ROS_DISTRO}/setup.bash
+          colcon build --event-handlers console_direct+ --symlink-install \
+              --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja \
+              --packages-select ocs2_thirdparty ocs2_core ocs2_oc \
+              ocs2_qp_solver ocs2_mpc ocs2_ddp
+#      - name: Test
+#        shell: bash
+#        run: |
+#          source devel_isolated/setup.bash
+#          catkin_make_isolated --use-ninja --merge --only-pkg-with-deps ocs2 --catkin-make-args run_tests
+#          catkin_test_results
