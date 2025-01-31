@@ -4,16 +4,24 @@
   <version>0.0.0</version>
   <description>The ocs2_ipm package</description>
 
+  <maintainer email="ruixiang.du@gmail.com">Ruixiang Du</maintainer>
   <maintainer email="sotaro.katayama@gmail.com">Sotaro Katayama</maintainer>
 
   <license>BSD-3</license>
 
   <buildtool_depend>catkin</buildtool_depend>
+
   <depend>ocs2_core</depend>
   <depend>ocs2_mpc</depend>
   <depend>ocs2_oc</depend>
-  <depend>blasfeo_catkin</depend>
-  <depend>hpipm_catkin</depend>
-  <test_depend>ocs2_qp_solver</test_depend>
+  <depend>blasfeo_colcon</depend>
+  <depend>hpipm_colcon</depend>
 
+  <test_depend>ocs2_qp_solver</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>
