@@ -55,7 +55,7 @@ add_library(${PROJECT_NAME}
     src/search_strategy/FilterLinesearch.cpp
     src/trajectory_adjustment/TrajectorySpreading.cpp)
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${Boost_LIBRARIES})
 ament_target_dependencies(${PROJECT_NAME} PUBLIC ${ros_dependencies})
 target_include_directories(${PROJECT_NAME} PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
@@ -135,6 +135,6 @@ if (BUILD_TESTING)
 endif ()
 
 ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
-ament_export_dependencies(${ros_dependencies})
+ament_export_dependencies(Boost ${ros_dependencies})
 
 ament_package()

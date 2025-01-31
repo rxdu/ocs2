@@ -1,29 +1,21 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>ocs2_sqp</name>
+  <name>hpipm_colcon</name>
   <version>0.0.0</version>
-  <description>The ocs2_hpipm package</description>
+  <description>Colcon wrapper for HPIPM.</description>
 
   <maintainer email="ruixiang.du@gmail.com">Ruixiang Du</maintainer>
-  <maintainer email="huier@todo.todo">huier</maintainer>
+  <maintainer email="rgrandia@ethz.ch">Ruben Grandia</maintainer>
 
-  <license>TODO</license>
+  <license>See package</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>ocs2_core</depend>
-  <depend>ocs2_mpc</depend>
-  <depend>ocs2_oc</depend>
   <depend>ocs2_qp_solver</depend>
   <depend>blasfeo_colcon</depend>
-  <depend>hpipm_colcon</depend>
-
-  <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_lint_common</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
   </export>
-
 </package>

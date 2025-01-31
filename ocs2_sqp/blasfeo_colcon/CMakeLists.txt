@@ -1,14 +1,23 @@
-cmake_minimum_required(VERSION 3.14)
-project(blasfeo_catkin)
+cmake_minimum_required(VERSION 3.18)
+project(blasfeo_colcon)
 
-find_package(catkin REQUIRED)
+if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+	add_compile_options(-Wall -Wextra -Wpedantic)
+endif ()
 
+## generate symbols for IDE indexer
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+## find dependencies
+find_package(ament_cmake REQUIRED)
+
+## add targets
 include(FetchContent)
 
 # Define directories
-set(BLASFEO_DEVEL_PREFIX ${CATKIN_DEVEL_PREFIX} CACHE STRING "Blasfeo install path")
-set(BLASFEO_INCLUDE_DIR ${BLASFEO_DEVEL_PREFIX}/include)
-set(BLASFEO_LIB_DIR ${BLASFEO_DEVEL_PREFIX}/lib)
+set(BLASFEO_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} CACHE STRING "Blasfeo install path")
+set(BLASFEO_INCLUDE_DIR ${BLASFEO_INSTALL_PREFIX}/include)
+set(BLASFEO_LIB_DIR ${BLASFEO_INSTALL_PREFIX}/lib)
 set(BLASFEO_DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/download)
 set(BLASFEO_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/build)
 
@@ -46,8 +55,7 @@ endforeach()
 set_target_properties(blasfeo PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${BLASFEO_LIB_DIR})
 
 # Propagate dependencies
-catkin_package(
-	INCLUDE_DIRS ${BLASFEO_INCLUDE_DIR}
-	LIBRARIES blasfeo
-	CFG_EXTRAS blasfeo-extras.cmake
-)
+ament_export_include_directories(include)
+ament_export_dependencies(blasfeo)
+
+ament_package(CONFIG_EXTRAS "cmake/blasfeo-extras.cmake.in")

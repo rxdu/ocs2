@@ -32,14 +32,12 @@ set(sys_dependencies
     Boost
     Eigen3
     Threads
-    OpenMP
-)
+    OpenMP)
 
 # ros dependencies
 find_package(ament_cmake REQUIRED)
 set(ros_dependencies
-    ocs2_thirdparty
-)
+    ocs2_thirdparty)
 foreach (dep IN ITEMS ${ros_dependencies})
   find_package(${dep} REQUIRED)
 endforeach ()
@@ -130,6 +128,7 @@ add_library(${PROJECT_NAME}
     src/penalties/penalties/SquaredHingePenalty.cpp
     src/thread_support/ThreadPool.cpp)
 target_compile_options(${PROJECT_NAME} PUBLIC ${OCS2_CXX_FLAGS})
+set_target_properties(${PROJECT_NAME} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(${PROJECT_NAME} PUBLIC
     Eigen3::Eigen
     ${Boost_LIBRARIES}
