@@ -71,8 +71,8 @@ jobs:
           source /opt/ros/${ROS_DISTRO}/setup.bash
           colcon build --event-handlers console_direct+ --symlink-install \
               --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release -G Ninja \
-              --packages-select ocs2_thirdparty ocs2_core ocs2_oc \
-              ocs2_qp_solver ocs2_mpc ocs2_ddp
+              --packages-up-to ocs2_thirdparty ocs2_core ocs2_oc \
+              ocs2_qp_solver ocs2_mpc ocs2_ddp ocs2_slp ocs2_sqp ocs2_ipm
 #      - name: Test
 #        shell: bash
 #        run: |
